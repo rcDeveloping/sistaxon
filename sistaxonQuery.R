@@ -1,7 +1,7 @@
 library(dplyr, warn.conflicts = FALSE)
 
 ## rad dataset
-sistaxon <- read.csv2('./2021-04-30-sistaxon_DOF-Especies-e-Codigos.csv')
+sistaxon <- read.csv2('./data/2021-04-30-sistaxon_DOF-Especies-e-Codigos.csv', fileEncoding = 'latin1')
 
 ## Query by popular name
 sistaxon_seek <- sistaxon %>%
