@@ -1,5 +1,15 @@
-## Set a function to serach in the SISTAXON dataset
+## Set a function to search in the SISTAXON data set
 query_sistaxon <- function() {
+        
+        # Load dplyr package
+        library(dplyr, warn.conflicts = FALSE)
+        
+        # Load data
+        url <- 'http://www.ibama.gov.br/phocadownload/sinaflor/2022/2022-07-22_Lista_especies_DOF.csv'
+
+        con <- read.csv(url, fileEncoding = 'latin1')
+        sistaxon <- con
+        rm(con)
         
         # Sets the "type" and "name" variables
         type <- ''
@@ -31,11 +41,11 @@ query_sistaxon <- function() {
                 # Convert 'white space' to '-'
                 name <- gsub(' ', '-', name)
                 
-                # Set a dataframe
+                # Set a data frame
                 output <- sistaxon %>%
-                        filter(NomePopular == name)
+                        filter(Nome.popular == name)
                 
-                # Checks if the dataframe has at least 1 row and most 15 rows
+                # Checks if the data frame has at least 1 row and most 15 rows
                 if (nrow(output) & nrow(output) <= 15) {
                         return(head(output, 15))
                 }
@@ -70,22 +80,22 @@ query_sistaxon <- function() {
                 # remove white space from the beginning and end of genus
                 name <- gsub('^\\s|\\s$', '', name)
                 
-                # Set a dataframe
+                # Set a data frame
                 output <- sistaxon %>%
-                        filter(grepl(paste0('^', name), NomeCientifico))
+                        filter(grepl(paste0('^', name), Nome.cientifico))
                 
                 if (nrow(output) & nrow(output) <= 15) {
                         return(head(output, 15))
                                 
                 }
-                # Checks if the dataframe has more than 15 row
+                # Checks if the data frame has more than 15 row
                 else if (nrow(output) & nrow(output) > 15) {
                         # Show message on user's screen
                         cat('Sua busca retornou mais de 15 registros.\n
                             Estamos abrindo uma aba com os dados!')
                         # Sets a 2 seconds pause
                         Sys.sleep(2)
-                        # Pop-up a viewer of the dataframe
+                        # Pop-up a viewer of the data frame
                         return(View(output))
                 }
 
@@ -98,9 +108,11 @@ query_sistaxon <- function() {
         ## Search by scientific name
         else {
                 # Show message on user's screen
-                cat('Digite o Nome Científico (ex.: Cedrela odorata\n')
+                cat('Digite o Nome Científico (ex.: Cedrela odorata')
                 # get the scientific name form console's user
-                name <- scan(what = 'character', n = 1, encoding = 'latin1', flush = TRUE)
+                name <- scan(what = 'character', nmax = 2, encoding = 'latin1')
+                # Combine the data read
+                name <- paste(name[1], name[2], sep = ' ')
                 # Convert name to lower case
                 name <- tolower(name)
                 # Fix Capitalization inconsistency
@@ -110,23 +122,23 @@ query_sistaxon <- function() {
                 # remove white space from the beginning and end of the scientific names
                 name <- gsub('^\\s|\\s$', '', name)
                 
-                # Set a dataframe
+                # Set a data frame
                 output <- sistaxon %>%
-                        filter(NomeCientifico == paste0(name))
+                        filter(Nome.cientifico == name)
                 
                 if (nrow(output) & nrow(output) <= 15) {
                         # Sets a 2 seconds pause
                         Sys.sleep(2)
                         return(head(output, 15))
                 }  
-                # Checks if the dataframe has more than 15 row
+                # Checks if the data frame has more than 15 row
                 else if (nrow(output) & nrow(output) > 15) {
                         # Show message on user's screen
                         cat('Sua busca retornou mais de 15 registros.\n
                             Estamos abrindo uma aba com os dados!')
                         # Sets a 2 seconds pause
                         Sys.sleep(2)
-                        # Pop-up a viewer of the dataframe 
+                        # Pop-up a viewer of the data frame 
                         return(View(output))
                 }
                 else {
