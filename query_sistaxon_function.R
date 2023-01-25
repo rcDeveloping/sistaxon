@@ -14,7 +14,7 @@ query_sistaxon <- function() {
         # Read data from the keyboard user
         type <- scan(what = 'integer', nmax = 1, flush = TRUE)
         
-        ## Serach by popular name
+        ## Search by popular name
         if (type == 1) {
                 # Show message on user's screen
                 cat('Digite o nome popular\n')
@@ -55,7 +55,7 @@ query_sistaxon <- function() {
                 }
         }
         
-        ## Serach by genus
+        ## Search by genus
         else if (type == 2) {
                 # Show message on user's screen
                 cat('Digite o Gênero\n')
@@ -72,7 +72,7 @@ query_sistaxon <- function() {
                 
                 # Set a dataframe
                 output <- sistaxon %>%
-                        filter(grepl('^Vouacapoua', NomeCientifico))
+                        filter(grepl(paste0('^', name), NomeCientifico))
                 
                 if (nrow(output) & nrow(output) <= 15) {
                         return(head(output, 15))
@@ -95,7 +95,7 @@ query_sistaxon <- function() {
                 }
         }
         
-        ## Serach by scientific name
+        ## Search by scientific name
         else {
                 # Show message on user's screen
                 cat('Digite o Nome Científico (ex.: Cedrela odorata\n')
@@ -112,9 +112,11 @@ query_sistaxon <- function() {
                 
                 # Set a dataframe
                 output <- sistaxon %>%
-                        filter(NomeCientifico == 'Vouacapoua americana')
+                        filter(NomeCientifico == paste0(name))
                 
                 if (nrow(output) & nrow(output) <= 15) {
+                        # Sets a 2 seconds pause
+                        Sys.sleep(2)
                         return(head(output, 15))
                 }  
                 # Checks if the dataframe has more than 15 row
@@ -133,6 +135,3 @@ query_sistaxon <- function() {
                 }
         }
 }
-
-## Call for the query_sistaxon() function
-query_sistaxon()
