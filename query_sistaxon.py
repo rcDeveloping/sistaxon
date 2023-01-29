@@ -6,6 +6,7 @@ import time
 from tkinter import *
 from tkinter import filedialog
 from pandastable import Table, TableModel
+from tkinter.messagebox import showinfo
 
 
 # Assign url of file: url
@@ -35,12 +36,13 @@ def pop_name():
         txt_output['text'] = txt_out
 
         f = Frame(main_window)
-        f.grid(column=0, row=17, pady=5)
+        f.grid(column=1, row=9, pady='2px')
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=18)
+        save_button.grid(column=1, row=10)
+
 
 def genus():
     """Search in SISTAXON's data by genus"""
@@ -62,12 +64,12 @@ def genus():
         txt_output['text'] = txt_out
 
         f = Frame(main_window)
-        f.grid(column=0, row=17, pady=5)
+        f.grid(column=1, row=9, pady='2px')
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=18)
+        save_button.grid(column=1, row=10)
 
 
 def sp():
@@ -90,12 +92,12 @@ def sp():
         txt_output['text'] = txt_out
 
         f = Frame(main_window)
-        f.grid(column=0, row=17, pady=5)
+        f.grid(column=1, row=9, pady='2px')
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=18)
+        save_button.grid(column=1, row=10)
 
 
 def save_file():
@@ -107,41 +109,48 @@ def save_file():
     )
     if file:
         output.to_csv(file, index=False, sep=';')  # store as CSV file
-        l3 = Label(my_w, text=file + ' Saved')
-        l3.grid(row=5, column=1)
+        # show_info(
+        #     title='Arquivo Salvo!',
+        #     message=file
+        # )
 
 
 # Build GUI #
 main_window = Tk()
 
+# Change the icon
+main_window.iconbitmap('./icon.ico')
+
 main_window.title('Busca Espécie SISTAXON')
-main_window.geometry('1280x960')
+canvas = Canvas(main_window, width=1152, height=864)
+canvas.grid(columnspan=3, rowspan=10)
 
 text_position = Label(main_window, text='Para buscar por Nome Popular (ex.: Cedro, Angelim-de-folha-larga)\n'
                                         'Para buscar por Gênero (ex.: Cedrela)\n'
                                         'Para buscar por Espécie (ex.: Cedrela odorata)\n',
                       font=14)
-text_position.grid(column=0, row=2)
+text_position.grid(column=1, row=0)
+
 name = Entry(main_window)
-name.place(width=800, height=80)
-name.grid(column=0, row=4)
+name.place(width=8, height=8)
+name.grid(columnspan=3, column=0, row=1)
 
 text_cmd = Label(main_window, text='Click na opção desejada')
-text_cmd.grid(column=0, row=6, padx=2, pady=10)
+text_cmd.grid(column=1, rowspan=2, row=2)
 
 # Search by popular name
-button = Button(main_window, text='Buscar Pelo nome Popular', font=14, command=pop_name)
-button.grid(column=0, row=8)
+button = Button(main_window, text='Buscar Pelo nome Popular', font=13, command=pop_name)
+button.grid(column=1, rowspan=2, row=3, ipady='0.5px', pady=5)
 
 # Search by genus
-button = Button(main_window, text='Buscar pelo Gênero', font=14, command=genus)
-button.grid(column=0, row=10, pady=5)
+button = Button(main_window, text='Buscar pelo Gênero', font=13, command=genus)
+button.grid(column=1, rowspan=2, row=4, ipady='0.5px', pady=5)
 
 # Search by specie
-button = Button(main_window, text='Buscar pela Espécie', font=14, command=sp)
-button.grid(column=0, row=12)
+button = Button(main_window, text='Buscar pela Espécie', font=13, command=sp)
+button.grid(column=1, rowspan=2, row=5, ipady='0.5px', pady=5)
 
 txt_output = Label(main_window, text='', font=18, fg='#f00')
-txt_output.grid(column=0, row=16)
+txt_output.grid(column=1, row=8)
 
 main_window.mainloop()
