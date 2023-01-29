@@ -25,18 +25,22 @@ def pop_name():
     global output
     output = pd.DataFrame(sistaxon.query(f'`Nome popular` == @n'))
     output = output[['Nome cientifico', 'Nome popular']]
-    #print('\nForam encontradas', str(len(output)),  f'espécies associadas ao nome popular {n}')
-              
+
     if output.empty:
-        print('Nome não consta no SISTAXON.')
+        txt_out = 'Nome não consta no SISTAXON.'
+        txt_output['text'] = txt_out
+
     else:
+        txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao nome popular {n}'''
+        txt_output['text'] = txt_out
+
         f = Frame(main_window)
-        f.grid(column=0, row=16, pady=5)
+        f.grid(column=0, row=17, pady=5)
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=17)
+        save_button.grid(column=0, row=18)
 
 def genus():
     """Search in SISTAXON's data by genus"""
@@ -48,18 +52,22 @@ def genus():
     global output
     output = pd.DataFrame(sistaxon[sistaxon['Nome cientifico'].str.contains(fr'{n}', regex=True)])
     output = output[['Nome cientifico', 'Nome popular']]
-    #print('\nForam encontradas', str(len(output)),  f'espécies associadas ao gênero {n}')
 
     if output.empty:
-        print('Gênero não consta no SISTAXON.')
+        txt_out = 'Gênero não consta no SISTAXON.'
+        txt_output['text'] = txt_out
+
     else:
+        txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao gênero {n}'''
+        txt_output['text'] = txt_out
+
         f = Frame(main_window)
-        f.grid(column=0, row=16, pady=5)
+        f.grid(column=0, row=17, pady=5)
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=17)
+        save_button.grid(column=0, row=18)
 
 
 def sp():
@@ -74,15 +82,20 @@ def sp():
     output = output[['Nome cientifico', 'Nome popular']]
 
     if output.empty:
-         print('Espécie não consta no SISTAXON.')
+         txt_out = 'Espécie não consta no SISTAXON.'
+         txt_output['text'] = txt_out
+
     else:
+        txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao gênero {n}'''
+        txt_output['text'] = txt_out
+
         f = Frame(main_window)
-        f.grid(column=0, row=16, pady=5)
+        f.grid(column=0, row=17, pady=5)
         table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
         pt.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
-        save_button.grid(column=0, row=17)
+        save_button.grid(column=0, row=18)
 
 
 def save_file():
@@ -104,10 +117,10 @@ main_window = Tk()
 main_window.title('Busca Espécie SISTAXON')
 main_window.geometry('1280x960')
 
-text_position = Label(main_window, text='Digite o nome popular/gênero/espécie\n\n'
-                                        'Para buscar por Nome Popular (ex.: Cedro, Angelim-de-folha-larga)\n'
+text_position = Label(main_window, text='Para buscar por Nome Popular (ex.: Cedro, Angelim-de-folha-larga)\n'
                                         'Para buscar por Gênero (ex.: Cedrela)\n'
-                                        'Para buscar por Espécie (ex.: Cedrela odorata)\n')
+                                        'Para buscar por Espécie (ex.: Cedrela odorata)\n',
+                      font=14)
 text_position.grid(column=0, row=2)
 name = Entry(main_window)
 name.place(width=800, height=80)
@@ -117,15 +130,18 @@ text_cmd = Label(main_window, text='Click na opção desejada')
 text_cmd.grid(column=0, row=6, padx=2, pady=10)
 
 # Search by popular name
-button = Button(main_window, text='Buscar Pelo nome Popular', command=pop_name)
+button = Button(main_window, text='Buscar Pelo nome Popular', font=14, command=pop_name)
 button.grid(column=0, row=8)
 
 # Search by genus
-button = Button(main_window, text='Buscar pelo Gênero', command=genus)
+button = Button(main_window, text='Buscar pelo Gênero', font=14, command=genus)
 button.grid(column=0, row=10, pady=5)
 
 # Search by specie
-button = Button(main_window, text='Buscar pela Espécie', command=sp)
+button = Button(main_window, text='Buscar pela Espécie', font=14, command=sp)
 button.grid(column=0, row=12)
+
+txt_output = Label(main_window, text='', font=18, fg='#f00')
+txt_output.grid(column=0, row=16)
 
 main_window.mainloop()
