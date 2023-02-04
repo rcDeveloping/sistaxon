@@ -7,6 +7,12 @@ from tkinter import *
 from tkinter import filedialog
 from pandastable import Table, TableModel
 from tkinter.messagebox import showinfo
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO, filename='log.log', format='%(asctime)s - %(levelname)s - %(message)s - %(funcName)s'
+)
 
 
 # Assign url of file: url
@@ -21,7 +27,8 @@ def pop_name():
 
     # remove typos
     n = name.get().lower().capitalize()
-        
+    logging.info(n)
+
     # Set a pandas data frame to output
     global output
     output = pd.DataFrame(sistaxon.query(f'`Nome popular` == @n'))
@@ -30,6 +37,7 @@ def pop_name():
     if output.empty:
         txt_out = 'Nome não consta no SISTAXON.'
         txt_output['text'] = txt_out
+        logging.warning(n)
 
     else:
         txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao nome popular {n}'''
@@ -37,8 +45,8 @@ def pop_name():
 
         f = Frame(main_window)
         f.grid(column=1, row=9, pady='2px')
-        table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
-        pt.show()
+        table = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
+        table.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
         save_button.grid(column=1, row=10)
@@ -49,7 +57,8 @@ def genus():
 
     # get the genus name and remove typos
     n = name.get().lower().capitalize()
-        
+    logging.info(n)
+
     # Set a pandas data frame to output
     global output
     output = pd.DataFrame(sistaxon[sistaxon['Nome cientifico'].str.contains(fr'{n}', regex=True)])
@@ -58,6 +67,7 @@ def genus():
     if output.empty:
         txt_out = 'Gênero não consta no SISTAXON.'
         txt_output['text'] = txt_out
+        logging.warning(n)
 
     else:
         txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao gênero {n}'''
@@ -65,8 +75,8 @@ def genus():
 
         f = Frame(main_window)
         f.grid(column=1, row=9, pady='2px')
-        table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
-        pt.show()
+        table = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
+        table.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
         save_button.grid(column=1, row=10)
@@ -77,6 +87,7 @@ def sp():
 
     # get the scientific name
     n = name.get().lower().capitalize()
+    logging.info(n)
 
     # Set a pandas data frame to output
     global output
@@ -86,6 +97,7 @@ def sp():
     if output.empty:
          txt_out = 'Espécie não consta no SISTAXON.'
          txt_output['text'] = txt_out
+         logging.warning(n)
 
     else:
         txt_out = f'''Foram encontradas {str(len(output))} espécies associadas ao gênero {n}'''
@@ -93,8 +105,8 @@ def sp():
 
         f = Frame(main_window)
         f.grid(column=1, row=9, pady='2px')
-        table = pt = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
-        pt.show()
+        table = Table(f, dataframe=output, showtoolbar=False, showstatusbar=True)
+        table.show()
 
         save_button = Button(main_window, text='Salvar CSV', command=save_file)
         save_button.grid(column=1, row=10)
@@ -119,7 +131,7 @@ def save_file():
 main_window = Tk()
 
 # Change the icon
-main_window.iconbitmap('./icon.ico')
+#main_window.iconbitmap('./icon.ico')
 
 main_window.title('Busca Espécie SISTAXON')
 canvas = Canvas(main_window, width=1152, height=864)
@@ -131,7 +143,7 @@ text_position = Label(main_window, text='Para buscar por Nome Popular (ex.: Cedr
                       font=14)
 text_position.grid(column=1, row=0)
 
-name = Entry(main_window)
+name = Entry(main_window, width=50)
 name.place(width=8, height=8)
 name.grid(columnspan=3, column=0, row=1)
 
