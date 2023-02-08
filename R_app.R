@@ -12,15 +12,19 @@ names(sistaxon) <- c('Código da espécie', 'Nome científico',
 ui <- fluidPage(
         titlePanel('SISTAXON'),
         theme = shinythemes::shinytheme('superhero'),
+        varSelectInput(
+                'option', 'Selecione uma opção',
+                sistaxon
+        ),
         textInput('name', 'Enter your name:'),
         tableOutput('out')
 )
 
 server <- function(input, output, session) {
         output$out <- renderTable({
-                subset(sistaxon, `Nome científico` == R.utils::capitalize(tolower(input$name))) 
+                dplyr::filter(sistaxon, !!input$option == R.utils::capitalize(tolower(input$name)))
         })
-        
+
 }
 
 shinyApp(ui = ui, server = server)
