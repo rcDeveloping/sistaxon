@@ -14,16 +14,28 @@ ui <- fluidPage(
         theme = shinythemes::shinytheme('superhero'),
         varSelectInput(
                 'option', 'Selecione uma opção',
-                sistaxon
+                sistaxon[, c(2, 4)]
         ),
         textInput('name', 'Enter your name:'),
-        tableOutput('out')
+        tableOutput('out'),
+        downloadButton('download', 'Download')
 )
 
 server <- function(input, output, session) {
-        output$out <- renderTable({
+        df <- reactive({
                 dplyr::filter(sistaxon, !!input$option == R.utils::capitalize(tolower(input$name)))
         })
+        output$out <- renderTable({
+                df()
+        })
+        output$download <- downloadHandler(
+                filename = function() {
+                        paste(input$name, '.csv', sep = '')
+                },
+                content = function(file) {
+                        write.csv2(df(), file, row.names = FALSE, fileEncoding = 'latin1')
+                }
+        )
 
 }
 
