@@ -12,13 +12,14 @@ names(sistaxon) <- c('Código da espécie', 'Nome científico',
 ui <- fluidPage(
         titlePanel('SISTAXON'),
         theme = shinythemes::shinytheme('superhero'),
-        varSelectInput(
-                'option', 'Selecione uma opção',
-                sistaxon[, c(2, 4)]
-        ),
-        textInput('name', 'Enter your name:'),
-        tableOutput('out'),
-        downloadButton('download', 'Download')
+        sidebarLayout(
+                sidebarPanel(
+                        varSelectInput('option', 'Selecione uma opção', sistaxon[, c(2, 4)]),
+                        textInput('name', 'Enter your name:'),
+                        downloadButton('download', 'Download')
+                ),
+                mainPanel(tableOutput('out'))
+        )
 )
 
 server <- function(input, output, session) {
