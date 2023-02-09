@@ -3,11 +3,18 @@ library(shiny)
 
 url <- 'http://www.ibama.gov.br/phocadownload/sinaflor/2022/2022-07-22_Lista_especies_DOF.csv'
 
-con <- read.csv(url, fileEncoding = 'latin1')
-sistaxon <- con
-rm(con)
-names(sistaxon) <- c('Código da espécie', 'Nome científico', 
-                     'Código Nome Popular', 'Nome popular')
+col_names <- c('Código da espécie', 'Nome científico', 
+               'Código Nome Popular', 'Nome popular')
+
+if (is.character(RCurl::getURL(url))) {
+        con <- read.csv(url, fileEncoding = 'latin1')
+        sistaxon <- con
+        rm(con)
+        names(sistaxon) <- col_names
+} else {
+        sistaxon <- read.csv('./2022-07-22_Lista_especies_DOF.csv', fileEncoding = 'latin1')
+        names(sistaxon) <- col_names
+}
 
 ui <- fluidPage(
         titlePanel('SISTAXON'),
