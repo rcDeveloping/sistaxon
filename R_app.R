@@ -22,7 +22,7 @@ ui <- fluidPage(
         sidebarLayout(
                 sidebarPanel(
                         varSelectInput('option', 'Selecione uma opção', sistaxon[, c(2, 4)]),
-                        textInput('name', 'Enter your name:'),
+                        textInput('name', 'Digite um nome:'),
                         downloadButton('download', 'Download')
                 ),
                 mainPanel(tableOutput('out'))
