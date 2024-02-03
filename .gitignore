@@ -2,3 +2,6 @@
 .Rhistory
 # APP
 *.exe
+
+# RStudio Connect folder
+rsconnect/
