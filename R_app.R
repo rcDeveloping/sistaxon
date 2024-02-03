@@ -17,6 +17,7 @@ if (is.character(RCurl::getURL(url))) {
 }
 
 ui <- fluidPage(
+        tags$head(includeHTML('google-analytics.html')),
         titlePanel('SISTAXON'),
         theme = shinythemes::shinytheme('superhero'),
         sidebarLayout(
